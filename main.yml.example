@@ -45,10 +45,12 @@
       ansible.builtin.include_tasks:
         file: tasks/docker.yml    
         
-    - name: Docker to USB
-      ansible.builtin.include_tasks:
-        file: tasks/docker_to_usb.yml
+# ========== OPTIONAL ==================
 
-    - name: Personal projects
-      ansible.builtin.include_tasks:
-        file: tasks/projects.yml
+#    - name: Docker to USB
+#      ansible.builtin.include_tasks:
+#        file: tasks/docker_to_usb.yml
+
+#    - name: Personal projects
+#      ansible.builtin.include_tasks:
+#        file: tasks/projects.yml
