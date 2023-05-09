@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="300" src="./assets/ansible-pi-logo.png">
+</p>
+
 # Raspberry PI setup with Ansible
 
 Setup your RPI from scratch with only one command!
