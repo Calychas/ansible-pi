@@ -1,10 +1,10 @@
 # Raspberry PI setup with Ansible
 
-Setup your RPI from scratch with one command!
+Setup your RPI from scratch only with one command!
 
 ## Description
 
-This repository contains Ansible tasks needed to setup the following modules on RPI (tested on Raspberry Pi OS 64-bit bullseye and RPI 3B+):
+This repository contains Ansible tasks needed to setup the following modules on RPI:
 
 * periodical autoupgrade
 * bigger SWAP
@@ -20,7 +20,8 @@ This repository contains Ansible tasks needed to setup the following modules on 
 
 ### Dependencies
 
-* Python (tested on 3.11.3 and Linux)
+* Python (tested on 3.11.3 and Linux) on the host
+* Raspberry Pi with a debian-based OS (tested on Raspberry Pi OS 64-bit bullseye and RPI 3B+)
 
 ### Installing
 
