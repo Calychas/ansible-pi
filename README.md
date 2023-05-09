@@ -1,6 +1,6 @@
 # Raspberry PI setup with Ansible
 
-Setup your RPI from scratch only with one command!
+Setup your RPI from scratch with only one command!
 
 ## Description
 
