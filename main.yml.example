@@ -1,0 +1,54 @@
+- name: Main
+  hosts: vms
+  vars:
+    swap_size_mb: 1024
+    git_user_email: "<email>"
+    git_user_name: "<name>"
+    zerotier_network_id: "<network_id>"
+    airsane_build_dir: "{{ ansible_env.HOME }}/Projects/AirSane-build/"
+    usb_device_path: "/dev/sda1"
+    usb_mount_path: "/media/usb-drive"
+  tasks:
+    - name: Initial setup
+      ansible.builtin.include_tasks:
+        file: tasks/initial_setup.yml
+    
+    - name: SWAP
+      ansible.builtin.include_tasks:
+        file: tasks/swap.yml
+
+    - name: GIT
+      ansible.builtin.include_tasks:
+        file: tasks/git.yml
+
+    - name: SSH
+      ansible.builtin.include_tasks:
+        file: tasks/ssh.yml
+
+    - name: ZeroTier
+      ansible.builtin.include_tasks:
+        file: tasks/zerotier.yml
+
+    - name: pyenv
+      ansible.builtin.include_tasks:
+        file: tasks/pyenv.yml
+
+    - name: CUPS
+      ansible.builtin.include_tasks:
+        file: tasks/cups.yml
+
+    - name: AirSane
+      ansible.builtin.include_tasks:
+        file: tasks/airsane.yml
+
+    - name: Docker
+      ansible.builtin.include_tasks:
+        file: tasks/docker.yml    
+        
+    - name: Docker to USB
+      ansible.builtin.include_tasks:
+        file: tasks/docker_to_usb.yml
+
+    - name: Personal projects
+      ansible.builtin.include_tasks:
+        file: tasks/projects.yml

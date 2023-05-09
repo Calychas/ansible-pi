@@ -1,0 +1,56 @@
+
+- name: Install initial packages
+  become: true
+  apt:
+    update_cache: true
+    cache_valid_time: 3600
+    pkg:
+      - ca-certificates
+      - curl
+      - gnupg
+
+- name: Install docker repo key to apt
+  become: true
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+
+- name: Install docker repository to apt
+  become: true
+  apt_repository:
+    repo: deb [arch=arm64] https://download.docker.com/linux/debian bullseye stable
+    state: present
+
+- name: Install docker packages
+  become: true
+  apt:
+    update_cache: true
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+
+- name: Reboot the machine to make the docker.service start # see: https://bbs.archlinux.org/viewtopic.php?id=267694
+  become: true
+  reboot:
+
+- name: Enable docker.service
+  become: true
+  service:
+    name: docker
+    state: restarted
+    enabled: yes
+    
+- name: Create "docker" group
+  become: true
+  group:
+    name: docker
+    state: present
+
+- name: Add user to "docker" group
+  become: true
+  user:
+    name: calychas
+    groups: docker
+    append: yes

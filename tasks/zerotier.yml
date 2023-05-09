@@ -1,0 +1,13 @@
+- name: Download zerotier install script
+  get_url:
+    url: https://install.zerotier.com
+    dest: /tmp/install_zerotier.sh
+    mode: 0755
+
+- name: Run install script
+  shell: /tmp/install_zerotier.sh
+  become: true
+
+- name: Join zerotier network
+  shell: zerotier-cli join "{{ zerotier_network_id }}"
+  become: true

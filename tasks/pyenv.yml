@@ -1,0 +1,49 @@
+- name: Install build environment
+  become: true
+  apt:
+    update_cache: true
+    cache_valid_time: 3600
+    pkg:
+      - build-essential
+      - libssl-dev
+      - zlib1g-dev
+      - libbz2-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - curl
+      - libncursesw5-dev
+      - xz-utils
+      - tk-dev
+      - libxml2-dev
+      - libxmlsec1-dev
+      - libffi-dev
+      - liblzma-dev
+
+- name: Download pyenv install script
+  get_url:
+    url: https://pyenv.run
+    dest: /tmp/install_pyenv.sh
+    mode: 0755
+
+- name: Run install script
+  shell: /tmp/install_pyenv.sh
+
+- name: Add pyenv to .bashrc
+  blockinfile:
+    dest: "{{ ansible_env.HOME }}/.bashrc"
+    block: |
+      export PYENV_ROOT="$HOME/.pyenv"
+      command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+      eval "$(pyenv init -)"
+    marker: '# {mark} ANSIBLE MANAGED BLOCK - pyenv'
+    create: yes
+
+- name: Add pyenv to .profile
+  blockinfile:
+    dest: "{{ ansible_env.HOME }}/.profile"
+    block: |
+      export PYENV_ROOT="$HOME/.pyenv"
+      command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+      eval "$(pyenv init -)"
+    marker: '# {mark} ANSIBLE MANAGED BLOCK - pyenv'
+    create: yes

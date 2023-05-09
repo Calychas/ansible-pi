@@ -1,0 +1,36 @@
+
+- name: Update sshd_config
+  become: true
+  blockinfile:
+    dest: "/etc/ssh/sshd_config"
+    insertafter: "^Include /etc/ssh/sshd_config"
+    block: |
+      Protocol 2
+      PasswordAuthentication no
+      PermitEmptyPasswords no
+      PermitRootLogin no
+      MaxAuthTries 3
+
+- name: Restart sshd service
+  become: true
+  service:
+    name: sshd
+    state: restarted
+    enabled: true
+
+- name: Generate the key
+  community.crypto.openssh_keypair:
+    path: "{{ ansible_env.HOME }}/.ssh/id_ed25519"
+    type: ed25519
+
+- name: Capture pub key
+  shell: cat "{{ ansible_env.HOME }}/.ssh/id_ed25519.pub"
+  register: ssh_key
+
+- name: Print pub key
+  debug:
+    msg: "{{ ssh_key.stdout }}"
+
+- pause:
+    prompt: "Please enter the above ssh public key to GitHub and then press a key"
+    echo: yes

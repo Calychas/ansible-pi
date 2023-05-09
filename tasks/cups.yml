@@ -1,0 +1,26 @@
+- name: Install cups packages
+  become: true
+  apt:
+    update_cache: true
+    cache_valid_time: 3600
+    pkg:
+      - cups
+      - printer-driver-escpr
+    state: latest
+
+- name: Add user to lpadmin group
+  become: true
+  user:
+    name: calychas
+    groups: lpadmin
+    append: yes
+
+- name: Setup cups
+  become: true
+  shell: cupsctl --remote-admin --remote-any --share-printers
+
+- name: Restart cups service
+  become: true
+  service:
+    name: cups
+    state: restarted

@@ -1,0 +1,17 @@
+- name: Setup editor
+  git_config:
+    name: core.editor
+    scope: global
+    value: nano
+
+- name: Setup email
+  git_config:
+    name: user.email
+    scope: global
+    value: "{{ git_user_email }}"
+
+- name: Setup email
+  git_config:
+    name: user.name
+    scope: global
+    value: "{{ git_user_name }}"

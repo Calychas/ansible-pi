@@ -1,0 +1,39 @@
+- name: Create a mount directory
+  become: true
+  file:
+    path: "{{ usb_mount_path }}"
+    state: directory
+
+- name: Get UUID
+  command: "lsblk {{ usb_device_path }} -no UUID"
+  register: uuid
+
+- name: Print uuid
+  ansible.builtin.debug:
+    msg: "{{ uuid.stdout_lines[0]}}"
+
+- name: Mount usb drive
+  become: true
+  mount:
+    path: "{{ usb_mount_path }}"
+    src: "UUID={{ uuid.stdout_lines[0] }}"
+    state: mounted
+    fstype: ext4
+    opts: defaults
+
+- name: Change docker default directory
+  become: true
+  blockinfile:
+    dest: "/etc/docker/daemon.json"
+    block: |
+        "data-root": "{{ usb_mount_path }}/docker" 
+    marker: "{mark}"
+    marker_begin: "{"
+    marker_end: "}"
+    create: true
+
+- name: Restart docker.service
+  become: true
+  service:
+    name: docker
+    state: restarted

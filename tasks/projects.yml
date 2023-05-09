@@ -1,0 +1,27 @@
+- name: Install packages
+  become: true
+  apt:
+    update_cache: true
+    cache_valid_time: 3600
+    pkg:
+      - jq
+
+- name: Clone HomeAssistant repository
+  git:
+    repo: 'git@github.com:Calychas/smart_home.git'
+    dest: "{{ansible_env.HOME}}/Projects/smart_home"
+    accept_hostkey: true
+
+- name: Crontab - update duckdns
+  cron:
+    name: "Update duckdns"
+    minute: "*/5"
+    job: "~/Projects/smart_home/duckdns/duck.sh >/dev/null 2>&1"
+
+- name: Crontab - update project images
+  cron:
+    name: "Update project images"
+    minute: "0"
+    hour: "6"
+    job: "~/Projects/smart_home/update_images.sh ~/Projects/smart_home/docker-compose.yml"
+    disabled: true

@@ -1,0 +1,63 @@
+- name: Install packages
+  become: true
+  apt:
+    update_cache: true
+    cache_valid_time: 3600
+    pkg:
+      - libsane-dev 
+      - libjpeg-dev
+      - libpng-dev
+      - libavahi-client-dev
+      - libusb-1.*-dev
+      - git
+      - cmake
+      - g++
+      - sane-airscan
+      - sane-utils
+      - avahi-daemon
+
+- name: Comment out "escl" in dll.conf
+  become: true
+  lineinfile:
+    path: /etc/sane.d/dll.conf
+    regexp: "^escl"
+    line: "#escl"
+
+- name: Add "airsane" in dll.conf
+  become: true
+  lineinfile:
+    path: /etc/sane.d/dll.conf
+    insertbefore: apple
+    line: airsane
+
+- name: Clone AirSane repository
+  git:
+    repo: 'https://github.com/SimulPiscator/AirSane.git'
+    dest: "{{ansible_env.HOME}}/Projects/AirSane"
+
+- name: Create a build directory if it does not exist
+  file:
+    path: "{{ airsane_build_dir }}"
+    state: directory
+
+- name: Cmake AirSane
+  shell: cmake ../AirSane
+  args:
+    chdir: "{{ airsane_build_dir }}"
+
+- name: Build AirSane
+  make:
+    chdir: "{{ airsane_build_dir }}"
+
+- name: Install AirSane
+  become: true
+  make:
+    chdir: "{{ airsane_build_dir }}"
+    target: install
+
+- name: Enable airsane.service
+  become: true
+  service:
+    name: airsaned
+    state: restarted
+    enabled: yes

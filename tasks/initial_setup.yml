@@ -1,0 +1,22 @@
+- name: Update apt-get repo and cache
+  become: true
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: Upgrade all apt packages
+  become: true
+  apt: 
+    upgrade: dist
+
+- name: Install packages
+  become: true
+  apt:
+    pkg:
+      - git
+
+- name: Crontab - setup update and upgrade
+  become: true
+  cron:
+    name: "Update and upgrade"
+    minute: "0"
+    hour: "5"
+    job: "apt update -q -y && apt dist-upgrade -q -y"
