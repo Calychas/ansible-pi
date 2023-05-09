@@ -12,6 +12,7 @@
   apt:
     pkg:
       - git
+      - sqlite3
 
 - name: Crontab - setup update and upgrade
   become: true
