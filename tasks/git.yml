@@ -10,7 +10,7 @@
     scope: global
     value: "{{ git_user_email }}"
 
-- name: Setup email
+- name: Setup name
   git_config:
     name: user.name
     scope: global
