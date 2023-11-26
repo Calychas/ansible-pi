@@ -14,10 +14,13 @@
   apt_key:
     url: https://download.docker.com/linux/debian/gpg
 
+- shell: lsb_release -sc
+  register: os_codename
+
 - name: Install docker repository to apt
   become: true
   apt_repository:
-    repo: deb [arch=arm64] https://download.docker.com/linux/debian bullseye stable
+    repo: deb [arch=arm64] https://download.docker.com/linux/debian "{{ os_codename.stdout }}" stable
     state: present
 
 - name: Install docker packages
