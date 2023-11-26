@@ -24,8 +24,8 @@ This repository contains Ansible tasks needed to setup the following modules on 
 
 ### Dependencies
 
-* Python (tested on 3.11.3 and Linux) on the host
-* Raspberry Pi with a debian-based OS (tested on Raspberry Pi OS 64-bit bullseye and RPI 3B+)
+* Python (tested on 3.11.6 and Linux) on the host
+* Raspberry Pi with a debian-based OS (tested on Raspberry Pi OS 64-bit bookworm and RPI 3B+). See [Raspberry Pi OS Imager](https://www.raspberrypi.com/software/) if you didn't install it yet.
 
 ### Installing
 
@@ -42,13 +42,21 @@ Copy and fill out the following files:
 
 ### Executing
 
+First debug the connection:
+
+```sh
+ansible-playbook -i inventory.yml debug.yml
+```
+
+If everything works, run the full suite:
+
 ```sh
 ansible-playbook -i inventory.yml main.yml -vv
 ```
 
 ## Authors
 
-* Kacper Leśniara (kacper.lesniara@gmail.com)
+* Kacper Leśniara ([kacper.lesniara@gmail.com](mailto:kacper.lesniara@gmail.com))
 
 ## License
 
