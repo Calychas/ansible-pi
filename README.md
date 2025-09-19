@@ -14,7 +14,7 @@ This repository contains Ansible tasks needed to setup the following modules on 
 * bigger SWAP
 * GIT config
 * secure SSH and generate key
-* ZeroTier
+* Tailscale
 * pyenv
 * cups and airsane for printers
 * docker (also moves docker files to a USB to save storage on the internal SD card)
@@ -33,6 +33,11 @@ You need to install Ansible. For that use:
 
 ```sh
 pip install -r requirements.txt
+```
+and then
+
+```sh
+ansible-galaxy install -r requirements.yml
 ```
 
 Copy and fill out the following files:

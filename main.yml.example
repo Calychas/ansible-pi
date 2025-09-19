@@ -4,10 +4,15 @@
     swap_size_mb: 1024
     git_user_email: "<email>"
     git_user_name: "<name>"
-    zerotier_network_id: "<network_id>"
+    tailscale_authkey: "<auth_key>"
+    tailscale_args: "--advertise-routes=192.168.0.0/24"
     airsane_build_dir: "{{ ansible_env.HOME }}/Projects/AirSane-build/"
     usb_device_path: "/dev/sda1"
     usb_mount_path: "/media/usb-drive"
+  
+  roles:
+    - role: artis3n.tailscale.machine
+
   tasks:
     - name: Initial setup
       ansible.builtin.include_tasks:
@@ -24,10 +29,6 @@
     - name: SSH
       ansible.builtin.include_tasks:
         file: tasks/ssh.yml
-
-    - name: ZeroTier
-      ansible.builtin.include_tasks:
-        file: tasks/zerotier.yml
 
     - name: pyenv
       ansible.builtin.include_tasks:
@@ -46,6 +47,10 @@
         file: tasks/docker.yml    
         
 # ========== OPTIONAL ==================
+
+#    - name: ZeroTier
+#      ansible.builtin.include_tasks:
+#        file: tasks/zerotier.yml
 
 #    - name: Docker to USB
 #      ansible.builtin.include_tasks:
