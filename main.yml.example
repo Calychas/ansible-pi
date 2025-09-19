@@ -5,11 +5,11 @@
     git_user_email: "<email>"
     git_user_name: "<name>"
     tailscale_authkey: "<auth_key>"
-    tailscale_args: "--advertise-routes=192.168.0.0/24"
+    tailscale_args: "--advertise-routes=192.168.0.0/24 --advertise-exit-node"
     airsane_build_dir: "{{ ansible_env.HOME }}/Projects/AirSane-build/"
     usb_device_path: "/dev/sda1"
     usb_mount_path: "/media/usb-drive"
-  
+
   roles:
     - role: artis3n.tailscale.machine
 
@@ -17,7 +17,7 @@
     - name: Initial setup
       ansible.builtin.include_tasks:
         file: tasks/initial_setup.yml
-    
+
     - name: SWAP
       ansible.builtin.include_tasks:
         file: tasks/swap.yml
@@ -44,8 +44,7 @@
 
     - name: Docker
       ansible.builtin.include_tasks:
-        file: tasks/docker.yml    
-        
+        file: tasks/docker.yml
 # ========== OPTIONAL ==================
 
 #    - name: ZeroTier
